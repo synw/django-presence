@@ -32,7 +32,7 @@ Then launch a Huey worker:
 python manage.py run_huey
   ```
 
-Last steps: the templates; where you want the presence widget to be place `{% include "presence/presence.html" %}`.
+Last step: the templates; where you want the presence widget to be place `{% include "presence/presence.html" %}`.
 Now copy the template `instant/templates/instant/js/handlers.js` to `templates/instant/js/handlers.js` and add 
 the presence app in it like this:
 
@@ -48,6 +48,8 @@ function handlers_for_event_class(event_class, channel, message) {
 	return true
 }
   ```
+You can tweak ``presence/js/handlers.js`` to add your own client-side event handlers.  
+
 ## How it works
 
 The presence data is automaticaly updated every minute from the Huey worker asking Centrifugo who is on the socket. 
