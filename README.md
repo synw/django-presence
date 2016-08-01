@@ -25,15 +25,15 @@ pip install redis huey
 
 Add `"presence",` to INSTALLED_APPS.
 
-Run the Redis and [launch the Centrifugo server](http://django-instant.readthedocs.io/en/latest/src/usage.html). 
-The launch a Huey worker:
+Run Redis and [launch the Centrifugo server](http://django-instant.readthedocs.io/en/latest/src/usage.html). 
+Then launch a Huey worker:
 
   ```bash
 python manage.py run_huey
   ```
 
 Last steps: the templates; where you want the presence widget to be place `{% include "presence/presence.html" %}`.
-Then copy the template `instant/templates/instant/js/handlers.js` to `templates/instant/js/handlers.js` and add 
+Now copy the template `instant/templates/instant/js/handlers.js` to `templates/instant/js/handlers.js` and add 
 the presence app in it like this:
 
   ```django
