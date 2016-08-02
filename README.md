@@ -6,7 +6,7 @@ This involves the following dependencies:
 
 - [Centrifugo](https://github.com/centrifugal/centrifugo/) for the websocket server.
 - [Redis](http://redis.io/) for the data broker.
-- [Huey](https://github.com/coleifer/huey) for the time based workers.
+- [Huey](https://github.com/coleifer/huey) for the non blocking time based worker.
 - [Django Instant](https://github.com/synw/django-instant) for the Centrifugo/Django layer.
 
 ## Install
@@ -23,7 +23,7 @@ pip install redis huey
 
 ## Configure and run
 
-In INSTALLED_APPS.
+In INSTALLED_APPS:
 
   ```python
 "huey.contrib.djhuey",
