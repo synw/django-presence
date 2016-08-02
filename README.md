@@ -23,7 +23,12 @@ pip install redis huey
 
 ## Configure and run
 
-Add `"presence",` to INSTALLED_APPS.
+In INSTALLED_APPS.
+
+  ```python
+"huey.contrib.djhuey",
+"presence",
+  ```
 
 Run Redis and [launch the Centrifugo server](http://django-instant.readthedocs.io/en/latest/src/usage.html). 
 Then launch a Huey worker:
