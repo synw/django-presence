@@ -42,8 +42,8 @@ In INSTALLED_APPS:
 
 In settings.py:
   ```python
-RedisHuey('your_project_name')
 from huey import RedisHuey
+RedisHuey('your_project_name')
   ```
 
 Run Redis and [launch the Centrifugo server](http://django-instant.readthedocs.io/en/latest/src/usage.html). 
