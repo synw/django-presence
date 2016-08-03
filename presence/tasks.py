@@ -19,7 +19,6 @@ def update_presence():
     # get presence info from Centrifugo
     cent_url = CENTRIFUGO_HOST+":"+str(CENTRIFUGO_PORT)
     client = Client(cent_url, SECRET_KEY, timeout=1)
-    print "CHAN: "+str(_get_public_channel())
     clients = client.presence(_get_public_channel())
     if DEBUG:
         print "Updating presence"

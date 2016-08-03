@@ -53,7 +53,10 @@ Then launch a Huey worker:
 python manage.py run_huey
   ```
 
-Last step: the templates; where you want the presence widget to be place `{% include "presence/presence.html" %}`.
+Last step: the templates: 
+
+Where you want the presence widget to be place `{% include "presence/widget.html" %}`.
+
 Now copy the template `instant/templates/instant/js/handlers.js` to `templates/instant/js/handlers.js` and add 
 the presence app in it like this:
 
