@@ -23,11 +23,27 @@ pip install redis huey
 
 ## Configure and run
 
+Configure Centrifugo to handle presence info: in config.json:
+
+  ```javascript
+{
+	"secret": "70b651f6-775a-4949-982b-b387b31c1d84",
+	"anonymous": true,
+	"presence":true
+}
+  ```
+
 In INSTALLED_APPS:
 
   ```python
 "huey.contrib.djhuey",
 "presence",
+  ```
+
+In settings.py:
+  ```python
+RedisHuey('your_project_name')
+from huey import RedisHuey
   ```
 
 Run Redis and [launch the Centrifugo server](http://django-instant.readthedocs.io/en/latest/src/usage.html). 
