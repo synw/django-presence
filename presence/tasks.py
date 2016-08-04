@@ -42,11 +42,13 @@ def update_presence():
             print '- '+user
     # update info in Redis for the http connections
     store = redis.StrictRedis(host=REDIS_HOST, port=REDIS_PORT, db=REDIS_DB)
-    channel = SITE_SLUG+'_num_anonymous'
-    store.set(channel, anonymous_users)
+    key = SITE_SLUG+'_num_anonymous'
+    store.set(key, anonymous_users)
     key = SITE_SLUG+'_users'
     store.delete(key)
-    store.lpush(key, *users)
+    print str(key)+' / '+str(users)
+    if len(users) > 0:
+        store.lpush(key, *users)
     # send presence info into a Centrifugo channel
     msg = ",".join(users)+'/'+str(anonymous_users)
     if total_users > 0:

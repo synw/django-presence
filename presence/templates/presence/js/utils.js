@@ -1,9 +1,9 @@
 {% load i18n %}
 
 function format_users(users, num_anonymous) {
-	var content = '<ul class="list-group">';
-	content = content+'<li class="list-group-item active">{% trans "Actually online" %}</li>';
-	content = content+'<li class="list-group-item">';
+	var content = '<ul style="list-style:none">';
+	content = content+'<li style="display:inline-block;color:grey">Online:</li>';
+	content = content+'<li style="display:inline-block;padding:0 0.5em 0 0.5em">';
 	//console.log("USERS: "+users);
 	for (var i = 0; i < users.length; i++) {
 		user = users[i];
@@ -14,10 +14,10 @@ function format_users(users, num_anonymous) {
 	var num_anonymous = parseFloat(num_anonymous);
 	if ( num_anonymous > 0) {
 		if ( num_anonymous == 1) {
-			content = content+'<li class="list-group-item">+ '+num_anonymous+" {% trans 'anonymous user' %}"+'</li>';
+			content = content+'<li style="display:inline-block;padding:0 0.5em 0 0.5em">+ '+num_anonymous+" anonyme"+'</li>';
 		}
 		else {
-			content = content+'<li class="list-group-item">+ '+num_anonymous+" {% trans 'anonymous users' %}"+'</li>';
+			content = content+'<li style="display:inline-block;padding:0 0.5em 0 0.5em">+ '+num_anonymous+" {% trans 'anonymous users' %}"+'</li>';
 		}
 	}
 	content = content+'</ul>';

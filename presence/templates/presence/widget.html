@@ -1,9 +1,9 @@
-{% load i18n presence %}
-<div id="presencebox">
-	{% get_presence as presence %}
-	<script type="text/javascript">
-		{% include "presence/js/utils.js" %}
-		var content = format_users({{ presence.users|safe }}, {{ presence.num_anonymous }});
-		$('#presencebox').html(content);
-	</script>
-</div>
+{% load presence %}
+
+<div id="presencebox"></div>
+{% get_presence as presence %}
+<script type="text/javascript">
+	{% include "presence/js/utils.js" %}
+	var content = format_users({{ presence.users|safe }}, {{ presence.num_anonymous }});
+	$('#presencebox').html(content);
+</script>
