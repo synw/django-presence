@@ -46,7 +46,8 @@ def update_presence():
     store.set(key, anonymous_users)
     key = SITE_SLUG+'_users'
     store.delete(key)
-    print str(key)+' / '+str(users)
+    if DEBUG:
+        print str(key)+' / '+str(users)
     if len(users) > 0:
         store.lpush(key, *users)
     # send presence info into a Centrifugo channel

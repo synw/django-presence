@@ -43,7 +43,7 @@ In INSTALLED_APPS:
 In settings.py:
   ```python
 from huey import RedisHuey
-RedisHuey('your_project_name')
+HUEY = RedisHuey('your_project_name')
   ```
 
 Run Redis and [launch the Centrifugo server](http://django-instant.readthedocs.io/en/latest/src/usage.html). 
@@ -61,8 +61,10 @@ Now copy the template `instant/templates/instant/js/handlers.js` to `templates/i
 the presence app in it like this:
 
   ```django
+{% include "presence/js/utils.js" %}
+
 function handlers_for_event_class(event_class, channel, message) {
-	// just add this line:
+	// add this line:
 	{% include "presence/js/handlers.js" %}
 	// other events
 	if (event_class == 'Important') {
