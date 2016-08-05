@@ -42,8 +42,9 @@ In INSTALLED_APPS:
 
 In settings.py:
   ```python
-INSTANT_APPS = ['presence'] # used for convenience so you don't have to include the app in the templates by yourself
-
+# this one is used for convenience so you don't have to include the app in the templates by yourself
+INSTANT_APPS = ['presence'] 
+# for huey
 from huey import RedisHuey
 HUEY = RedisHuey('your_project_name')
   ```
