@@ -17,7 +17,7 @@ First set up Centrifugo and Django Instant:
 Then Redis and Huey:
 
   ```bash
-sudo aptitude install redis-server # example for debian
+sudo apt-get install redis-server # example for debian
 pip install redis huey
   ```
 
@@ -70,7 +70,7 @@ and later on the live updates will be performed via the websocket channel.
 
 In this design the server only pushes presence information every minute. There are no requests made from actions on the
 client side: for example it could be possible to fetch fresh info on each client connection, but it could lead to some
-kind of overloading scenarios, scaling problems and unecessary ressources consumption. 
+unecessary ressources consumption, overloading scenarios or scaling problems. 
 
 This app wants to be fast and reliable so giving the garantee to get an info of max age 1 minute looked 
 sufficient here in order to preserve the performance and the stability.
