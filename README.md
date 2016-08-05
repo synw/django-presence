@@ -42,6 +42,8 @@ In INSTALLED_APPS:
 
 In settings.py:
   ```python
+INSTANT_APPS = ['presence'] # used for convenience so you don't have to include the app in the templates by yourself
+
 from huey import RedisHuey
 HUEY = RedisHuey('your_project_name')
   ```
@@ -51,28 +53,11 @@ Then launch a Huey worker:
 
   ```bash
 python manage.py run_huey
-  ```
-
-Last step: the templates: 
+  ``` 
 
 Where you want the presence widget to be place `{% include "presence/widget.html" %}`.
 
-Now copy the template `instant/templates/instant/js/handlers.js` to `templates/instant/js/handlers.js` and add 
-the presence app in it like this:
 
-  ```django
-{% include "presence/js/utils.js" %}
-
-function handlers_for_event_class(event_class, channel, message) {
-	// add this line:
-	{% include "presence/js/handlers.js" %}
-	// other events
-	if (event_class == 'Important') {
-		// ...
-		return true
-	}
-	return true
-}
   ```
 You can tweak ``presence/js/handlers.js`` to add your own client-side event handlers.  
 

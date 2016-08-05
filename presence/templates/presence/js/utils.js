@@ -1,6 +1,6 @@
 {% load i18n %}
 
-var debug = true;
+var debug = false;
 
 function format_users(users, num_anonymous) {
 	var content = '<ul style="list-style:none">';
