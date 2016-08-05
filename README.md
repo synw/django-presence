@@ -57,8 +57,6 @@ python manage.py run_huey
 
 Where you want the presence widget to be place `{% include "presence/widget.html" %}`.
 
-
-  ```
 You can tweak ``presence/js/handlers.js`` to add your own client-side event handlers.  
 
 ## How it works
