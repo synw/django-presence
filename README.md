@@ -24,7 +24,7 @@ pip install redis celery
 
 ## Configure and run
 
-Configure Centrifugo to handle presence info: in config.json:
+Configure Centrifugo to handle presence info: in ``config.json``:
 
   ```javascript
 {
@@ -46,22 +46,23 @@ In settings.py:
 # this one is used for convenience so you don't have to include the app in the templates by yourself
 INSTANT_APPS = ['presence']
 
-# for huey
-from huey import RedisHuey
-HUEY = RedisHuey('your_project_name')
-
 # for celery:
 from datetime import timedelta
 CELERYBEAT_SCHEDULE = {
-    'update-presence-every': {
+    'update-presence': {
         'task': 'presence.tasks.update_presence',
         'schedule': timedelta(minutes=1),
     },
 }
 
+# for huey
+from huey import RedisHuey
+HUEY = RedisHuey('your_project_name')
   ```
   
-Default async backend is Celery. To use Huey add a ``ASYNC_BACKEND = "huey"`` in settings.
+Default async backend is Celery. You will need a ``celery.py`` file as explained [here](http://docs.celeryproject.org/en/latest/django/first-steps-with-django.html).
+
+To use Huey add a ``ASYNC_BACKEND = "huey"`` in settings.
 
 Run Redis and [launch the Centrifugo server](http://django-instant.readthedocs.io/en/latest/src/usage.html). 
 Then launch a Celery beat and a worker or a just a Huey worker:
