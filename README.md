@@ -80,7 +80,7 @@ You can tweak ``presence/js/handlers.js`` to add your own client-side event hand
 
 ## How it works
 
-The presence data is automaticaly updated every minute from the Huey worker asking Centrifugo who is on the socket. 
+The presence data is automaticaly updated every minute from the time based worker asking Centrifugo who is on the socket. 
 This data is broadcasted to the clients via the websocket and as well stored into Redis.
 
 The presence data for the initial client http connection (when the page loads) is retrieved from Redis, 
