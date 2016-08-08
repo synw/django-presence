@@ -3,15 +3,18 @@
 import redis
 from cent.core import Client
 from django.conf import settings
-from huey.contrib.djhuey import crontab, periodic_task
 from instant import broadcast
 from instant.conf import CENTRIFUGO_PORT, CENTRIFUGO_HOST, SECRET_KEY, REDIS_HOST, REDIS_PORT, REDIS_DB, SITE_SLUG
 from instant.utils import _get_public_channel
+from presence.conf import ASYNC_BACKEND
+if ASYNC_BACKEND == 'celery':
+    from celery import task
+elif ASYNC_BACKEND == 'huey':
+    from huey.contrib.djhuey import crontab, periodic_task
 
 DEBUG = False
 
-@periodic_task(crontab(minute='*'))
-def update_presence():
+def _update_presence():
     """
     Fetch presence info every minute and post it to the clients for update.
     The info is saved into Redis to use for the initial http connection
@@ -55,3 +58,16 @@ def update_presence():
     if total_users > 0:
         broadcast(message=msg, event_class="__presence__")
     return
+
+if ASYNC_BACKEND == 'huey':
+
+    @periodic_task(crontab(minute='*'))
+    def update_presence():
+        return _update_presence()
+
+elif ASYNC_BACKEND == 'celery':
+
+    @task(ignore_results=True)
+    def update_presence():
+        return _update_presence()
+

@@ -6,7 +6,7 @@ This involves the following dependencies:
 
 - [Centrifugo](https://github.com/centrifugal/centrifugo/) for the websocket server.
 - [Redis](http://redis.io/) for the data broker.
-- [Huey](https://github.com/coleifer/huey) for the non blocking time based worker.
+- [Celery](https://github.com/celery/celery) or [Huey](https://github.com/coleifer/huey) for the non blocking time based worker.
 - [Django Instant](https://github.com/synw/django-instant) for the Centrifugo/Django layer.
 
 ## Install
@@ -14,11 +14,12 @@ This involves the following dependencies:
 First set up Centrifugo and Django Instant:
  [instructions here](http://django-instant.readthedocs.io/en/latest/src/install.html)
  
-Then Redis and Huey:
+Then Redis and Huey or Celery:
 
   ```bash
 sudo apt-get install redis-server # example for debian
-pip install redis huey
+pip install redis celery
+# or pip install redis huey
   ```
 
 ## Configure and run
@@ -35,9 +36,9 @@ Configure Centrifugo to handle presence info: in config.json:
 
 In INSTALLED_APPS:
 
-  ```python
-"huey.contrib.djhuey",
+   ```python
 "presence",
+# for huey add "huey.contrib.djhuey",
   ```
 
 In settings.py:
@@ -47,12 +48,25 @@ INSTANT_APPS = ['presence']
 # for huey
 from huey import RedisHuey
 HUEY = RedisHuey('your_project_name')
+# for celery:
+from datetime import timedelta
+CELERYBEAT_SCHEDULE = {
+    'update-presence-every-30-seconds': {
+        'task': 'presence.tasks.update_presence',
+        'schedule': timedelta(seconds=30),
+    },
+}
+
   ```
+  
+Default async backend is Celery. To use Huey add a ``ASYNC_BACKEND = "huey"`` in settings.
 
 Run Redis and [launch the Centrifugo server](http://django-instant.readthedocs.io/en/latest/src/usage.html). 
-Then launch a Huey worker:
+Then launch a Celery or a Huey worker:
 
   ```bash
+celery -A project_name worker  -l info --broker='redis://localhost:6379/0' -B
+# or
 python manage.py run_huey
   ``` 
 
