@@ -44,16 +44,18 @@ In INSTALLED_APPS:
 In settings.py:
   ```python
 # this one is used for convenience so you don't have to include the app in the templates by yourself
-INSTANT_APPS = ['presence'] 
+INSTANT_APPS = ['presence']
+
 # for huey
 from huey import RedisHuey
 HUEY = RedisHuey('your_project_name')
+
 # for celery:
 from datetime import timedelta
 CELERYBEAT_SCHEDULE = {
-    'update-presence-every-30-seconds': {
+    'update-presence-every': {
         'task': 'presence.tasks.update_presence',
-        'schedule': timedelta(seconds=30),
+        'schedule': timedelta(minutes=1),
     },
 }
 
@@ -62,10 +64,12 @@ CELERYBEAT_SCHEDULE = {
 Default async backend is Celery. To use Huey add a ``ASYNC_BACKEND = "huey"`` in settings.
 
 Run Redis and [launch the Centrifugo server](http://django-instant.readthedocs.io/en/latest/src/usage.html). 
-Then launch a Celery or a Huey worker:
+Then launch a Celery beat and a worker or a just a Huey worker:
 
   ```bash
-celery -A project_name worker  -l info --broker='redis://localhost:6379/0' -B
+celery -A project_name beat  -l info --broker='redis://localhost:6379/0'
+celery -A project_name worker  -l info --broker='redis://localhost:6379/0'
+
 # or
 python manage.py run_huey
   ``` 
