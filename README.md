@@ -37,6 +37,7 @@ Configure Centrifugo to handle presence info: in ``config.json``:
 In INSTALLED_APPS:
 
    ```python
+"instant",
 "presence",
 # for huey add "huey.contrib.djhuey",
   ```
@@ -92,5 +93,6 @@ client side: for example it could be possible to fetch fresh info on each client
 unecessary ressources consumption, overloading scenarios or scaling problems. 
 
 This app wants to be fast and reliable so giving the garantee to get an info of max age 1 minute looked 
-sufficient here in order to preserve the performance and the stability.
+sufficient here in order to preserve the performance and the stability. You can set this default update time
+to a lower value in seconds in the Celery settings. Huey is limited to 1 minute.
 
