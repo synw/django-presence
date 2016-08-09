@@ -61,7 +61,8 @@ from huey import RedisHuey
 HUEY = RedisHuey('your_project_name')
   ```
   
-Default async backend is Celery. You will need a ``celery.py`` file as explained [here](http://docs.celeryproject.org/en/latest/django/first-steps-with-django.html).
+Default async backend is Celery. You will need a ``celery.py`` file as explained 
+[here](http://docs.celeryproject.org/en/latest/django/first-steps-with-django.html)
 
 To use Huey add a ``ASYNC_BACKEND = "huey"`` in settings.
 
