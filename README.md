@@ -101,10 +101,13 @@ Edit ``presence/go/config.json`` with the same Centrifugo settings that are in s
 	"centrifugo_secret_key":"70b651f6-775a-4949-982b-b387b31c1d84",
 	"centrifugo_host":"localhost",
 	"centrifugo_port":"8001",
-	"channels":["SITESLUG_public"]
+	"channels":["SITESLUG_public"],
+	"interval":"10s"
 }
-// Replace SITESLUG with the value SITE_SLUG set in settings.py
   ```
+Replace SITESLUG with the value SITE_SLUG set in settings.py 
+
+Interval is the update rate: ex: set to "1m" for one minute, to "30s" for 30 seconds 
 
 The default async backend is the Go module, but you can chose the one you want:
 
