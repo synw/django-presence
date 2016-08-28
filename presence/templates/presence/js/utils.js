@@ -2,6 +2,24 @@
 
 var debug = false;
 
+function count_users(presence_info) {
+	var users = [];
+	var anonymous = 0;
+	for (var key in presence_info) {
+		  if (presence_info.hasOwnProperty(key)) {
+			var user = presence_info[key].user;
+			if (user == "") {
+				anonymous++;
+			}
+			else {
+				users.push(user);
+			}
+		  }
+		}
+	if ( debug === true ) {console.log("Users: "+users+' + '+anonymous+' anonymous')};
+	return [users, anonymous]
+}
+
 function format_users(users, num_anonymous) {
 	var content = '<ul style="list-style:none">';
 	content = content+'<li style="display:inline;color:grey">Online:</li>';

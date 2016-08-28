@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
 
-import redis
 from cent.core import Client
-from django.conf import settings
 from instant import broadcast
-from instant.conf import CENTRIFUGO_PORT, CENTRIFUGO_HOST, SECRET_KEY, REDIS_HOST, REDIS_PORT, REDIS_DB, SITE_SLUG
+from instant.conf import CENTRIFUGO_PORT, CENTRIFUGO_HOST, SECRET_KEY, SITE_SLUG
 from instant.utils import _get_public_channel
 from presence.conf import ASYNC_BACKEND
 if ASYNC_BACKEND == 'celery':
@@ -16,8 +14,7 @@ DEBUG = False
 
 def _update_presence():
     """
-    Fetch presence info every minute and post it to the clients for update.
-    The info is saved into Redis to use for the initial http connection
+    Fetch presence info every minute from Centrifugo and post it to the clients for update.
     """
     # get presence info from Centrifugo
     cent_url = CENTRIFUGO_HOST+":"+str(CENTRIFUGO_PORT)
@@ -43,16 +40,6 @@ def _update_presence():
         print "Connected users:"
         for user in users:
             print '- '+user
-    # update info in Redis for the http connections
-    store = redis.StrictRedis(host=REDIS_HOST, port=REDIS_PORT, db=REDIS_DB)
-    key = SITE_SLUG+'_num_anonymous'
-    store.set(key, anonymous_users)
-    key = SITE_SLUG+'_users'
-    store.delete(key)
-    if DEBUG:
-        print str(key)+' / '+str(users)
-    if len(users) > 0:
-        store.lpush(key, *users)
     # send presence info into a Centrifugo channel
     msg = ",".join(users)+'/'+str(anonymous_users)
     if total_users > 0:

@@ -1,3 +1,5 @@
+{% load i18n %}
+
 if (event_class == '__presence__') {
 	console.log('Presence event');
 	var s = message.split('/');
