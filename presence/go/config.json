@@ -1,0 +1,7 @@
+{
+	"centrifugo_secret_key":"b126f67b-bd07-4459-a54b-f1b2c7b5999f",
+	"centrifugo_host":"localhost",
+	"centrifugo_port":"8001",
+	"channels":["mogo_public"],
+	"interval":"10s"
+}

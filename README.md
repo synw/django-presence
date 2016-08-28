@@ -1,28 +1,23 @@
 # Django Presence
 
-A widget that auto-updates the list of users present on the site.
+A widget to real time update a list of users present on the site. This package provides a javascript Centrifugo client
+that listens to a websocket channel, and an async time based worker that updates the presence information.
 
-This involves the following dependencies: 
+## Install
+
+Dependencies:
 
 - [Centrifugo](https://github.com/centrifugal/centrifugo/) for the websocket server.
 - [Django Instant](https://github.com/synw/django-instant) for the Centrifugo/Django layer.
 
-## Install
+Clone the repository
 
-First set up Centrifugo and Django Instant:
+Set up Centrifugo and Django Instant:
  [instructions here](http://django-instant.readthedocs.io/en/latest/src/install.html)
- 
-Then Redis and Huey or Celery:
 
-  ```bash
-sudo apt-get install redis-server # example for debian
-pip install redis celery
-# or pip install redis huey
-  ```
+## Configuration
 
-## Configure and run
-
-Configure Centrifugo to handle presence info: in ``config.json``:
+Configure Centrifugo to handle presence info in the Centrifugo ``config.json``:
 
   ```javascript
 {
@@ -37,13 +32,34 @@ In INSTALLED_APPS:
    ```python
 "instant",
 "presence",
-# for huey add "huey.contrib.djhuey",
   ```
+  
+In settings.py
 
+   ```python
+SITE_SLUG = "mysitename"
+  ```
+  
+Choose an async worker: either the go module or a python backend.
+
+#### Python async workers
+
+Supported backends are Celery and Huey
+
+##### Celery
+
+Install Celery:
+
+  ```bash
+sudo apt-get install redis-server # example for debian
+pip install redis celery
+  ```
+  
 In settings.py:
-  ```python
 
-# for celery:
+  ```python
+PRESENCE_ASYNC_BACKEND = "celery"
+
 from datetime import timedelta
 CELERYBEAT_SCHEDULE = {
     'update-presence': {
@@ -51,18 +67,58 @@ CELERYBEAT_SCHEDULE = {
         'schedule': timedelta(minutes=1),
     },
 }
+  ```
+You will need a ``celery.py`` file as explained 
+[here](http://docs.celeryproject.org/en/latest/django/first-steps-with-django.html)
 
-# for huey
+##### Huey
+
+  ```bash
+sudo apt-get install redis-server # example for debian
+pip install redis huey
+  ```
+
+In INSTALLED_APPS:
+  
+   ```python
+"huey.contrib.djhuey",
+  ```
+  
+In settings.py:
+
+  ```python
 PRESENCE_ASYNC_BACKEND = "huey"
 from huey import RedisHuey
 HUEY = RedisHuey('your_project_name')
   ```
-  
-Default async backend is Celery. You will need a ``celery.py`` file as explained 
-[here](http://docs.celeryproject.org/en/latest/django/first-steps-with-django.html)
 
-Run Redis and [launch the Centrifugo server](http://django-instant.readthedocs.io/en/latest/src/usage.html). 
-Then launch a Celery beat and a worker or a just a Huey worker:
+#### Go async worker
+
+Edit ``presence/go/config.json`` with the same Centrifugo settings that are in settings.py:
+
+  ```javascript
+{
+	"centrifugo_secret_key":"70b651f6-775a-4949-982b-b387b31c1d84",
+	"centrifugo_host":"localhost",
+	"centrifugo_port":"8001",
+	"channels":["SITESLUG_public"]
+}
+// Replace SITESLUG with the value SITE_SLUG set in settings.py
+  ```
+
+The default async backend is the Go module, but you can chose the one you want:
+
+- Celery: good if you are familiar with it and already using it
+- Huey: easier to setup than Celery but limited
+- Go: fast and nothing to install 
+
+## Run the worker
+
+[Run the Centrifugo server](http://django-instant.readthedocs.io/en/latest/src/usage.html)
+
+#### Python workers
+
+Run Redis and launch a Celery beat and a worker or a just a Huey worker:
 
   ```bash
 celery -A project_name beat  -l info --broker='redis://localhost:6379/0'
@@ -70,7 +126,16 @@ celery -A project_name worker  -l info --broker='redis://localhost:6379/0'
 
 # or
 python manage.py run_huey
-  ``` 
+  ```
+
+#### Go worker
+
+Run the worker:
+
+  ```bash
+cd presence/go/
+./centpres 
+  ```
 
 ## Templates
 

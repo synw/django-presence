@@ -3,4 +3,4 @@
 from django.conf import settings
 
 
-ASYNC_BACKEND =  getattr(settings, 'PRESENCE_ASYNC_BACKEND', 'celery')
+ASYNC_BACKEND =  getattr(settings, 'PRESENCE_ASYNC_BACKEND', 'go')
