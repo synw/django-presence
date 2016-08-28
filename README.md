@@ -160,14 +160,13 @@ You can tweak ``presence/js/handlers.js`` to add your own client-side event hand
 
 ## How it works
 
-The presence data is automaticaly updated every minute from the time based worker asking Centrifugo who is on the socket. 
+The presence data is automaticaly updated from the time based worker asking Centrifugo who is on the socket. 
 This data is broadcasted to the clients via the websocket.
 
-In this design the server only pushes presence information every minute. There are no requests made from actions on the
-client side: for example it could be possible to fetch fresh info on each client connection, but it could lead to some
-unecessary ressources consumption, overloading scenarios or scaling problems. 
+In this design the server only pushes presence information. There are no requests made from actions on the
+client side: for example it could be possible to fetch fresh info on each client connection, 
+but it could lead to some unecessary ressources consumption, overloading scenarios or scaling problems. 
 
-This app wants to be fast and reliable so giving the garantee to get an info of max age 1 minute looked 
-sufficient here in order to preserve the performance and the stability. You can set this default update time
-to a lower value in seconds in the Celery settings. Huey is limited to 1 minute.
+You can set this default update time to a lower value in the settings if you use the go worker or Celery.
+Only Huey is limited to 1 minute.
 
