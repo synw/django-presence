@@ -92,7 +92,7 @@ from huey import RedisHuey
 HUEY = RedisHuey('your_project_name')
   ```
 
-#### Go async worker
+#### Experimental go async worker
 
 Edit ``presence/go/config.json`` with the same Centrifugo settings that are in settings.py:
 
@@ -109,11 +109,11 @@ Replace SITESLUG with the value SITE_SLUG set in settings.py
 
 Interval is the update rate: ex: set to "1m" for one minute, to "30s" for 30 seconds 
 
-The default async backend is the Go module, but you can chose the one you want:
+The default async backend is Celery, but you can chose the one you want:
 
 - Celery: good if you are familiar with it and already using it
 - Huey: easier to setup than Celery but limited
-- Go: fast and nothing to install 
+- Go: fast and nothing to install but still very experimental
 
 ## Run the worker
 
@@ -167,6 +167,6 @@ In this design the server only pushes presence information. There are no request
 client side: for example it could be possible to fetch fresh info on each client connection, 
 but it could lead to some unecessary ressources consumption, overloading scenarios or scaling problems. 
 
-You can set this default update time to a lower value in the settings if you use the go worker or Celery.
+You can set this default update time to a lower value in the settings if you use Celery or the go worker.
 Only Huey is limited to 1 minute.
 
