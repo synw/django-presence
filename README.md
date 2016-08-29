@@ -38,11 +38,12 @@ In settings.py
 
    ```python
 SITE_SLUG = "mysitename"
-  ```
-  
-Choose an async worker: either the go module or a python backend.
 
-#### Python async workers
+# optional : if not set default is SITE_SLUG+'_public'
+PRESENCE_CHANNEL = "mychannel"
+  ```
+
+#### Async backends
 
 Supported backends are Celery and Huey
 
@@ -64,7 +65,7 @@ from datetime import timedelta
 CELERYBEAT_SCHEDULE = {
     'update-presence': {
         'task': 'presence.tasks.update_presence',
-        'schedule': timedelta(minutes=1),
+        'schedule': timedelta(seconds=30),
     },
 }
   ```
@@ -92,34 +93,40 @@ from huey import RedisHuey
 HUEY = RedisHuey('your_project_name')
   ```
 
-#### Experimental go async worker
+#### Global worker
 
-Edit ``presence/go/config.json`` with the same Centrifugo settings that are in settings.py:
+You can update presence channels for multiple sites using one process. The standard python worker updates one channel.
+A go worker is used to update multiple channels.
+
+In settings.py:
+
+  ```python
+PRESENCE_GLOBAL_WORKER = True
+  ```
+
+Create a ``centpres_config.json`` file either in your main django project directory or in ``~/.centpres`` or in
+``/etc/centpres``
+Use the same Centrifugo settings that are in settings.py and provide a list of channels to push presence updates to:
 
   ```javascript
 {
 	"centrifugo_secret_key":"70b651f6-775a-4949-982b-b387b31c1d84",
 	"centrifugo_host":"localhost",
 	"centrifugo_port":"8001",
-	"channels":["SITESLUG_public"],
-	"interval":"10s"
+	"channels":["channel1", "channel2", "channel3", "channel4", "channel5", "channel6"]
 }
   ```
-Replace SITESLUG with the value SITE_SLUG set in settings.py 
 
-Interval is the update rate: ex: set to "1m" for one minute, to "30s" for 30 seconds 
-
-The default async backend is Celery, but you can chose the one you want:
+The default async backend is Celery.
 
 - Celery: good if you are familiar with it and already using it
 - Huey: easier to setup than Celery but limited
-- Go: fast and nothing to install but still very experimental
+
+About the go worker: use it if you have multiple sites to update
 
 ## Run the worker
 
 [Run the Centrifugo server](http://django-instant.readthedocs.io/en/latest/src/usage.html)
-
-#### Python workers
 
 Run Redis and launch a Celery beat and a worker or a just a Huey worker:
 
@@ -129,15 +136,6 @@ celery -A project_name worker  -l info --broker='redis://localhost:6379/0'
 
 # or
 python manage.py run_huey
-  ```
-
-#### Go worker
-
-Run the worker:
-
-  ```bash
-cd presence/go/
-./centpres 
   ```
 
 ## Templates
@@ -167,6 +165,6 @@ In this design the server only pushes presence information. There are no request
 client side: for example it could be possible to fetch fresh info on each client connection, 
 but it could lead to some unecessary ressources consumption, overloading scenarios or scaling problems. 
 
-You can set this default update time to a lower value in the settings if you use Celery or the go worker.
-Only Huey is limited to 1 minute.
+Huey is limited to 1 minute but you can set this default update time to a lower value in the settings 
+if you use Celery.
 

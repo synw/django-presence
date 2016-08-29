@@ -6,14 +6,15 @@ import (
 	"strings"
 	"github.com/spf13/viper"
 	"github.com/centrifugal/gocent"
-	"github.com/robfig/cron"
 	)
 
 	
 func getConf() map[string]interface{} {
 	default_chans := []string{"public"}
-	viper.SetConfigName("config")
+	viper.SetConfigName("centpres_config")
 	viper.AddConfigPath(".")
+	viper.AddConfigPath("./etc/centpres")
+	viper.AddConfigPath("$HOME/.centpres")
 	viper.SetDefault("centrifugo_host", "localhost")
 	viper.SetDefault("centrifugo_port", "8001")
 	viper.SetDefault("channels", default_chans)
@@ -72,23 +73,12 @@ func push_presence_data(conf map[string]interface{}, channel string, c chan stri
 }
 
 func main() {
-	c := make(chan string)
-	conf := getConf()
-	channels := conf["channels"].([]string)
-	interval := conf["interval"].(string)
-	cr := cron.New()
-	tick := fmt.Sprintf("@every %s", interval)
-	fmt.Println("******** Listening to channels", channels)
-			fmt.Println("Broadcasting presence data every", interval)
-	cr.AddFunc(tick, func() { 
+		c := make(chan string)
+		conf := getConf()
+		channels := conf["channels"].([]string)
 		for _, channel := range channels {
 			go push_presence_data(conf, channel, c)
 			output := <- c
 			fmt.Println(output)
 		}
-	})
-	cr.Start()
-	defer cr.Stop()
-	for {
-    }
 }

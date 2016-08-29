@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
+import os
 from cent.core import Client
 from instant import broadcast
-from instant.conf import CENTRIFUGO_PORT, CENTRIFUGO_HOST, SECRET_KEY, SITE_SLUG
-from instant.utils import _get_public_channel
-from presence.conf import ASYNC_BACKEND
+from instant.conf import CENTRIFUGO_PORT, CENTRIFUGO_HOST, SECRET_KEY
+from presence.conf import ASYNC_BACKEND, CHANNEL, GLOBAL_WORKER
 if ASYNC_BACKEND == 'celery':
     from celery import task
 elif ASYNC_BACKEND == 'huey':
@@ -19,7 +19,7 @@ def _update_presence():
     # get presence info from Centrifugo
     cent_url = CENTRIFUGO_HOST+":"+str(CENTRIFUGO_PORT)
     client = Client(cent_url, SECRET_KEY, timeout=1)
-    clients = client.presence(_get_public_channel())
+    clients = client.presence(CHANNEL)
     if DEBUG:
         print "Updating presence"
     # post presence info
@@ -46,15 +46,28 @@ def _update_presence():
         broadcast(message=msg, event_class="__presence__")
     return
 
+def global_update():
+    com = './presence/go/centpres'
+    os.system(com)
+    return
+
 if ASYNC_BACKEND == 'huey':
 
     @periodic_task(crontab(minute='*'))
     def update_presence():
-        return _update_presence()
+        if GLOBAL_WORKER is True:
+            global_update()
+        else:
+            _update_presence()
+        return
 
 elif ASYNC_BACKEND == 'celery':
-
+    
     @task(ignore_results=True)
     def update_presence():
-        return _update_presence()
+        if GLOBAL_WORKER is True:
+            global_update()
+        else:
+            _update_presence()
+        return
 
