@@ -149,16 +149,12 @@ Add a ``instant/extra_handlers.js`` template with this content:
   
 Where you want the presence widget to be place `{% include "presence/widget.html" %}`.
 
-You can tweak ``presence/js/handlers.js`` to add your own client-side event handlers.
+You can tweak ``presence/js/handlers.js`` to make your own client-side event handlers.
 
 ## How it works
 
 The presence data is automaticaly updated from the time based worker asking Centrifugo who is on the socket. 
 This data is broadcasted to the clients via the websocket.
-
-In this design the server only pushes presence information. There are no requests made from actions on the
-client side: for example it could be possible to fetch fresh info on each client connection, 
-but it could lead to some unecessary ressources consumption, overloading scenarios or scaling problems. 
 
 Huey is limited to 1 minute but you can set this default update time to a lower value in the settings 
 if you use Celery.
