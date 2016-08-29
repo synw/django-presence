@@ -98,12 +98,6 @@ HUEY = RedisHuey('your_project_name')
 You can update presence channels for multiple sites using one process. The standard python worker updates one channel.
 A go worker is used to update multiple channels.
 
-In settings.py:
-
-  ```python
-PRESENCE_GLOBAL_WORKER = True
-  ```
-
 Create a ``centpres_config.json`` file either in your main django project directory or in ``~/.centpres`` or in
 ``/etc/centpres``
 Use the same Centrifugo settings that are in settings.py and provide a list of channels to push presence updates to:
@@ -116,13 +110,14 @@ Use the same Centrifugo settings that are in settings.py and provide a list of c
 	"channels":["channel1", "channel2", "channel3", "channel4", "channel5", "channel6"]
 }
   ```
+  
+Option 1 is to set a cronjob on ``presence/go/centpres``, and you don't need any async backend.
+Option 2 is to use the async backend to trigger the updates: in settings.py: ``PRESENCE_GLOBAL_WORKER = True``
 
 The default async backend is Celery.
 
 - Celery: good if you are familiar with it and already using it
 - Huey: easier to setup than Celery but limited
-
-About the go worker: use it if you have multiple sites to update
 
 ## Run the worker
 
