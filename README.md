@@ -96,7 +96,7 @@ HUEY = RedisHuey('your_project_name')
 #### Global worker
 
 You can update presence channels for multiple sites using one process. The standard python worker updates 
-one channel. A go worker is used to update multiple channels.
+one channel. A go worker is used to concurently update multiple channels.
 
 Create a ``centpres_config.json`` file either in your main django project directory (where manage.py is)
  or in ``~/.centpres`` or in ``/etc/centpres`` Use the same Centrifugo settings that are in settings.py 
