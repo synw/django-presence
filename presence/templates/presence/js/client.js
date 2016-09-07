@@ -1,5 +1,5 @@
 subscription.presence().then(function(message) {
-	//if ( debug === true ) {console.log('PRESENCE: '+JSON.stringify(message.data))};
+	if ( debug === true ) {console.log('PRESENCE: '+JSON.stringify(message.data))};
 	var uinfo = count_users(message.data);
 	var users = uinfo[0];
 	var anonymous = uinfo[1];
