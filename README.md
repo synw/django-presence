@@ -107,7 +107,7 @@ Create a ``centpres_config.json`` file either in your main django project direct
 	"centrifugo_secret_key":"70b651f6-775a-4949-982b-b387b31c1d84",
 	"centrifugo_host":"localhost",
 	"centrifugo_port":"8001",
-	"channels":["site1_public", "site1_public", "site1_public"]
+	"channels":["site1_public", "site2_public", "site3_public"]
 }
   ```
   
