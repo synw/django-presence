@@ -36,11 +36,17 @@ function format_users(users, num_anonymous) {
 			}
 		};
 		//console.log("TAB: "+JSON.stringify(numtabs));
-		for ( var user in numtabs ) {
+		var keys = Object.keys(numtabs);
+		keys.sort();
+		for (var i=0; i<keys.length; i++) {
+		    var user = keys[i];
 			var numhtml = "";
+			{% if user.is_superuser %}
+			{# Displays the number of opened tabs in the broswer #}
 			if ( numtabs[user] > 1) {
 				numhtml = ' <span style="color:grey;font-size:85%">('+numtabs[user]+')</span>';
 			}
+			{% endif %}
 			content = content+'<li style="display:inline;padding:0 0.5em 0 0.5em">';
 			content = content+'<i class="fa fa-user" style="color:lightgrey"></i> '+user;
 			content = content+numhtml+'</li>';
