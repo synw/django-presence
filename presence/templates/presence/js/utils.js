@@ -25,11 +25,26 @@ function format_users(users, num_anonymous) {
 	content = content+'<li style="display:inline;color:grey">Online:</li>';
 	if (debug === true) {console.log(getClockTime(true)+" USERS: "+users)};
 	if (users.length > 0) {
+		var numtabs = {};
 		for (var i = 0; i < users.length; i++) {
-			user = users[i];
-			//if (debug === true) {console.log("USER: "+user)};
-		    content = content+'<li style="display:inline;padding:0 0.5em 0 0.5em"><i class="fa fa-user" style="color:lightgrey"></i> '+user+'</li>';
+			var user = users[i];
+			if ( numtabs.hasOwnProperty(user) === false) {
+				numtabs[user] = 1;
+			}
+			else {
+				numtabs[user] = numtabs[user]+1;
+			}
 		};
+		//console.log("TAB: "+JSON.stringify(numtabs));
+		for ( var user in numtabs ) {
+			var numhtml = "";
+			if ( numtabs[user] > 1) {
+				numhtml = ' <span style="color:grey;font-size:85%">('+numtabs[user]+')</span>';
+			}
+			content = content+'<li style="display:inline;padding:0 0.5em 0 0.5em">';
+			content = content+'<i class="fa fa-user" style="color:lightgrey"></i> '+user;
+			content = content+numhtml+'</li>';
+		}
 	}
 	var num_anonymous_ = parseFloat(num_anonymous);
 	if ( num_anonymous > 0) {
