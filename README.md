@@ -5,12 +5,12 @@ that listens to a websocket channel, and an async time based worker that updates
 
 ## Install
 
+``pip install django-presence``
+
 Dependencies:
 
 - [Centrifugo](https://github.com/centrifugal/centrifugo/) for the websocket server.
 - [Django Instant](https://github.com/synw/django-instant) for the Centrifugo/Django layer.
-
-Clone the repository
 
 Set up Centrifugo and Django Instant:
  [instructions here](http://django-instant.readthedocs.io/en/latest/src/install.html)
