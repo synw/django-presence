@@ -2,7 +2,7 @@
 
 import os
 from cent.core import Client
-from instant import broadcast
+from instant.producers import broadcast
 from instant.conf import CENTRIFUGO_PORT, CENTRIFUGO_HOST, SECRET_KEY
 from presence.conf import ASYNC_BACKEND, CHANNEL, GLOBAL_WORKER
 if ASYNC_BACKEND == 'celery':
