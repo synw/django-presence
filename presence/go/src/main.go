@@ -7,7 +7,6 @@ import (
 	"github.com/spf13/viper"
 	"github.com/centrifugal/gocent"
 	)
-
 	
 func getConf() map[string]interface{} {
 	default_chans := []string{"public"}
@@ -18,7 +17,6 @@ func getConf() map[string]interface{} {
 	viper.SetDefault("centrifugo_host", "localhost")
 	viper.SetDefault("centrifugo_port", "8001")
 	viper.SetDefault("channels", default_chans)
-	viper.SetDefault("interval", "10s")
 	err := viper.ReadInConfig()
 	if err != nil {
 	    panic(fmt.Errorf("Fatal error config file: %s \n", err))
@@ -28,7 +26,7 @@ func getConf() map[string]interface{} {
 	conf["port"] = viper.Get("centrifugo_port")
 	conf["secret_key"] = viper.Get("centrifugo_secret_key")
 	conf["channels"] = viper.GetStringSlice("channels")
-	conf["interval"] = viper.Get("interval")
+	conf["frequency"] = viper.GetInt("frequency")
 	return conf
 }
 
@@ -54,7 +52,7 @@ func push_presence_data(conf map[string]interface{}, channel string, c chan stri
 	host := conf["host"].(string)
 	port := conf["port"].(string)
 	// connect to Centrifugo
-	url := fmt.Sprintf("http://%s:%s", host, port)
+	url := fmt.Sprintf("%s:%s", host, port)
 	client := gocent.NewClient(url, secret, 5*time.Second)
 	presence, _ := client.Presence(channel)
 	msg := format_msg(presence)
@@ -72,13 +70,22 @@ func push_presence_data(conf map[string]interface{}, channel string, c chan stri
 	 return
 }
 
-func main() {
-		c := make(chan string)
-		conf := getConf()
-		channels := conf["channels"].([]string)
-		for _, channel := range channels {
-			go push_presence_data(conf, channel, c)
-			output := <- c
-			fmt.Println(output)
+func push_all_data(conf map[string]interface{}, t time.Time) {
+	channels := conf["channels"].([]string)
+	c := make(chan string)
+	for _, channel := range channels {
+		go push_presence_data(conf, channel, c)
+		//output := <- c
+		//fmt.Println(output)
 		}
+	return
+}
+
+func main() {
+	conf := getConf()
+	frequency := conf["frequency"].(int)
+	duration := time.Duration(frequency)*time.Second
+	for x := range time.Tick(duration) {
+		push_all_data(conf, x)
+	}
 }

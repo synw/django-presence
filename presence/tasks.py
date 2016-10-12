@@ -70,4 +70,3 @@ elif ASYNC_BACKEND == 'celery':
         else:
             _update_presence()
         return
-
