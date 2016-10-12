@@ -15,12 +15,12 @@ command ``python manage.py installpres``: it will generate two files in your mai
 
 To run the worker: ``./centpres``. This will start updating presence info.
 
-Note: you can also compile the go module from the source in presence/go/src/
+Note: you can also compile the go module from the source in *presence/go/src/*
 
 Alternate workers
 -----------------
 
-For those who want a more traditional way 2 python async backends are supported: Celery and Huey.
+For those who want a more traditional way two python async backends are supported: Celery and Huey.
 
 For Celery in settings.py:
 
@@ -55,6 +55,7 @@ For Huey in settings.py:
 ::
    
    PRESENCE_ASYNC_BACKEND = "huey"
+   
    from huey import RedisHuey
    HUEY = RedisHuey('your_project_name')
 
@@ -65,3 +66,5 @@ Then:
 ::
    
    python manage.py run_huey
+   
+Note: Huey is limited: it will update presence info every minute
