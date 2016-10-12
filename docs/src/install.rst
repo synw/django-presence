@@ -10,6 +10,8 @@ Install Django Instant according to `this documentation <http://django-instant.r
 
 ``pip install django-presence``
 
+Add ``"presence",`` to installed apps
+
 Generate the config and install the worker:
 
 .. highlight:: bash
@@ -20,8 +22,6 @@ Generate the config and install the worker:
 
 Settings
 --------
-
-Add ``"presence",`` to installed apps
 
 Centrifugo config: be sure to have presence enabled in ``config.json`` (cf django-instant docs):
 
