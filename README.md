@@ -1,7 +1,7 @@
 # Django Presence
 
 A real time list of users on the site widget. This package provides a javascript client
-that listens to a websocket channel, and an async time based worker that updates the presence information.
+that listens to a websocket channel, and a time based worker that updates the presence information.
 
 Dependencies:
 
