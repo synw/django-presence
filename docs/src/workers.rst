@@ -7,7 +7,7 @@ This data is broadcasted to the clients over the websocket.
 Default worker
 --------------
 
-The default worker for presence updating is a go module. Install with the 
+The default worker for presence updates is a go module. Install with the 
 command ``python manage.py installpres``: it will generate two files in your main project directory:
 
 - ``centpres``: the executable
