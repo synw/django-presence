@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-
+from __future__ import print_function
 import os
 import json
 from django.core.management.base import BaseCommand
@@ -17,12 +16,12 @@ class Command(BaseCommand):
         prespath = os.path.dirname(presence.__file__)
         gomodpath = os.path.join(prespath, 'go')
         # copy the executable
-        print "Installing the worker ..."
+        print ("Installing the worker ...")
         _cmd = "cp -v "+gomodpath+"/centpres "+settings.BASE_DIR
         os.system(_cmd)
-        print "["+bcolors.OKBLUE+"x"+bcolors.ENDC+"] Executable file installed" 
+        print("["+bcolors.OKBLUE+"x"+bcolors.ENDC+"] Executable file installed")
         # generate config
-        print "Generating config ..."
+        print("Generating config ...")
         conf = {
                 "centrifugo_secret_key":SECRET_KEY,
                 "centrifugo_host":CENTRIFUGO_HOST,
@@ -33,7 +32,7 @@ class Command(BaseCommand):
         _file = open(settings.BASE_DIR+"/centpres_config.json", "w")
         _file.write(json.dumps(conf))
         _file.close()
-        print "["+bcolors.OKBLUE+"x"+bcolors.ENDC+"] File centpres_config.json generated" 
+        print("["+bcolors.OKBLUE+"x"+bcolors.ENDC+"] File centpres_config.json generated" )
         msg = "[ "+bcolors.OKGREEN+"ok"+bcolors.ENDC+" ] Django presence worker installed: run "+bcolors.OKBLUE+"./centpres"+bcolors.ENDC+" to start the service"
-        print msg
+        print(msg)
         return
