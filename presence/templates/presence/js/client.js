@@ -4,7 +4,8 @@ subscription.presence().then(function(message) {
 	var users = uinfo[0];
 	var anonymous = uinfo[1];
 	var content = format_users(users, anonymous);
-	$('#presencebox').html(content);
+	var box = document.getElementById('presencebox');
+	box.innerHTML = content;
 }, function(err) {
 	if ( debug === true ) {console.log('PRESENCE ERROR: '+err)};
 });
