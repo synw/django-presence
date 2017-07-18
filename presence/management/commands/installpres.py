@@ -6,7 +6,7 @@ from django.conf import settings
 import presence
 from presence.management.conf import bcolors
 from instant.conf import SECRET_KEY, CENTRIFUGO_HOST, CENTRIFUGO_PORT
-from presence.conf import CHANNEL, FREQUENCY
+from presence.conf import WATCH_CHANNEL, PUBLISH_CHANNEL, FREQUENCY
 
 
 class Command(BaseCommand):
@@ -22,11 +22,12 @@ class Command(BaseCommand):
         print("["+bcolors.OKBLUE+"x"+bcolors.ENDC+"] Executable file installed")
         # generate config
         print("Generating config ...")
+        addr = CENTRIFUGO_HOST.replace("http://", "")+":"+str(CENTRIFUGO_PORT)
         conf = {
-                "centrifugo_secret_key":SECRET_KEY,
-                "centrifugo_host":CENTRIFUGO_HOST,
-                "centrifugo_port":str(CENTRIFUGO_PORT),
-                "channels":[CHANNEL],
+                "addr":addr,
+                "key":SECRET_KEY,
+                "watch":[WATCH_CHANNEL],
+                "publish":[PUBLISH_CHANNEL],
                 "frequency":FREQUENCY
                 }
         _file = open(settings.BASE_DIR+"/centpres_config.json", "w")

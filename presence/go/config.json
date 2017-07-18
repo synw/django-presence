@@ -1,7 +1,7 @@
-{
-	"centrifugo_secret_key":"b126f67b-bd07-4459-a54b-f1b2c7b5999f",
-	"centrifugo_host":"localhost",
-	"centrifugo_port":"8001",
-	"channels":["sitename_public"],
-	"frequency":"10"
+{ 
+	"addr": "localhost:8001", 
+	"key": "238a3fd4-71c9-4eb1-9995-914b235efef1",
+	"watch": "public",
+	"presence": "public",
+	"frequency": 10
 }
