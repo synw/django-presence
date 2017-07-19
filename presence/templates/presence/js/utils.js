@@ -1,6 +1,6 @@
 {% load i18n %}
 
-var debug = false;
+var debug = true;
 
 function count_users(presence_info) {
 	var users = [];
@@ -25,32 +25,34 @@ function format_users(users, num_anonymous) {
 	};
 	var content = '<ul style="list-style:none">';
 	content = content+'<li id="presence-title">Online:</li>';
-	if (users.length > 0) {
-		var numtabs = {};
-		for (var i = 0; i < users.length; i++) {
-			var user = users[i];
-			if ( numtabs.hasOwnProperty(user) === false) {
-				numtabs[user] = 1;
-			}
-			else {
-				numtabs[user] = numtabs[user]+1;
-			}
-		};
-		//console.log("TAB: "+JSON.stringify(numtabs));
-		var keys = Object.keys(numtabs);
-		keys.sort();
-		for (var i=0; i<keys.length; i++) {
-		    var user = keys[i];
-			var numhtml = "";
-			{% if user.is_superuser %}
-				{# Displays the number of opened tabs in the broswer #}
-				if ( numtabs[user] > 1) {
-					numhtml = ' <span style="presence-usertabs">('+numtabs[user]+')</span>';
+	if (users) {
+		if (users.length > 0) {
+			var numtabs = {};
+			for (var i = 0; i < users.length; i++) {
+				var user = users[i];
+				if ( numtabs.hasOwnProperty(user) === false) {
+					numtabs[user] = 1;
 				}
-			{% endif %}
-			content = content+'<li class="presence-user">';
-			content = content+'<i class="fa fa-user" style="color:lightgrey"></i> '+user;
-			content = content+numhtml+'</li>';
+				else {
+					numtabs[user] = numtabs[user]+1;
+				}
+			};
+			//console.log("TAB: "+JSON.stringify(numtabs));
+			var keys = Object.keys(numtabs);
+			keys.sort();
+			for (var i=0; i<keys.length; i++) {
+			    var user = keys[i];
+				var numhtml = "";
+				{% if user.is_superuser %}
+					{# Displays the number of opened tabs in the broswer #}
+					if ( numtabs[user] > 1) {
+						numhtml = ' <span style="presence-usertabs">('+numtabs[user]+')</span>';
+					}
+				{% endif %}
+				content = content+'<li class="presence-user">';
+				content = content+'<i class="fa fa-user" style="color:lightgrey"></i> '+user;
+				content = content+numhtml+'</li>';
+			}
 		}
 	}
 	var num_anonymous_ = parseFloat(num_anonymous);
