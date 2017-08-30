@@ -1,6 +1,6 @@
 {% load i18n %}
 
-var debug = true;
+var instantDebug = true;
 
 function count_users(presence_info) {
 	var users = [];
@@ -20,7 +20,7 @@ function count_users(presence_info) {
 }
 
 function format_users(users, num_anonymous) {
-	if ( debug === true ) {
+	if ( instantDebug === true ) {
 		console.log(getClockTime(true)+" Users: "+users+' + '+anonymous+' anonymous')
 	};
 	var content = '<ul style="list-style:none">';

@@ -1,7 +1,0 @@
-{ 
-	"addr": "localhost:8001", 
-	"key": "238a3fd4-71c9-4eb1-9995-914b235efef1",
-	"watch": "public",
-	"presence": "public",
-	"frequency": 10
-}

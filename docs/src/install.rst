@@ -12,14 +12,6 @@ Install Django Instant according to `this documentation <http://django-instant.r
 
 Add ``"presence",`` to installed apps
 
-Generate the config and install the worker:
-
-.. highlight:: bash
-
-::
-   
-   python manage.py installpres
-
 Settings
 --------
 
